@@ -10,7 +10,7 @@ fn prompt(name: &str) -> String {
 }
 
 fn help() {
-    println!("--del         ;deletes file with given path;\n");
+    println!("--del          ;deletes file with given path;\n");
     println!("")
 }
 
@@ -26,24 +26,29 @@ fn del(f_path: &str) -> bool {
 
 fn main() {
     loop {
-        let input = prompt("> ");
+        let input = prompt("alice> ");
         let words: Vec<&str> = input.split_whitespace().collect();
         if let Some(command) = words.get(0) {
             match *command {
                 "help" => help(),
                 "del" => {
-                    if let Some(file_path) = words.get(1) {
-                        if del(file_path) {
-                            println!("File deleted\n");
-                        } else {
-                            eprintln!("Error deleting the file\n");
-                        }
+                    if let Some(extra) = words.get(2) {
+                        println!("incorrect usage: extra word {}", extra)
                     } else {
-                        println!("Usage: del <file_path>\n");
-                    }
+                        if let Some(file_path) = words.get(1) {
+                            if del(file_path) {
+                                println!("File deleted\n");
+                            } else {
+                                eprintln!("Error deleting the file\n");
+                            }
+                        } else {
+                            println!("Usage: del <file_path>\n");
+                        }
+                    }                   
                 }
                 _ => println!("Unknown command: {}\n", command),
             }
         }
     }
 }
+
