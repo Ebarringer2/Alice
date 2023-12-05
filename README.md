@@ -1,2 +1,2 @@
 # Alice
-custom CMD and terminal functionality in Rust
+custom cmd and terminal functionality based in Rust
