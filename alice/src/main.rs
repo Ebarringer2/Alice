@@ -24,11 +24,11 @@ fn del(f_path: &str) -> bool {
 
 fn find(mut f_dir: &str) -> bool {
     println!("accessing path...\n");
-    if f_dir == "" {
+    if f_dir == "" { //if the user doesn't type in anything after calling the function
         f_dir = ".";
     }
     match Command::new("explorer")
-        .arg(f_dir) // 1 arg: the current directory | can be changed to intake any directory the user desires
+        .arg(f_dir) 
         .spawn()   // spawning the process
     {
         Ok(_) => {
@@ -64,13 +64,18 @@ fn main() {
                     }                   
                 }
                 "find" => {
-                    if let Some(f_dir) = words.get(1) {
-                        if find(f_dir) {
-                            println!("File Explorer successfully launched.");
-                        } else {
-                            eprintln!("Error launching File Explorer.");
+                    if let Some(extra) = words.get(2) {
+                        println!("incorrect usage: extra word {}", extra)
+                    } else {
+                        if let Some(f_dir) = words.get(1) {
+                            if find(f_dir) {
+                                println!("File Explorer successfully launched.");
+                            } else {
+                                eprintln!("Error launching File Explorer.");
+                            }
                         }
                     }
+                    
                     
                     
                 }
