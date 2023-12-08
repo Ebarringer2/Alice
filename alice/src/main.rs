@@ -65,7 +65,7 @@ fn main() {
                 "rename-item" => {
                     // Check if there are exactly three words in the command
                     if words.len() != 3 {
-                        println!("Usage: rename-item <old_file_path> <new_file_path>\n");
+                        println!("Usage: rename-item <old_file_path> <new_file_name>\n");
                     } else {
                         let old_file_path = words.get(1).unwrap_or(&"").to_string();
                         let new_file_path = words.get(2).unwrap_or(&"").to_string();
