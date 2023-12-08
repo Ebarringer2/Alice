@@ -7,7 +7,7 @@ fn prompt(name: &str) -> String {
     print!("{}", name);
     std::io::stdout().flush().unwrap();
     std::io::stdin().read_line(&mut line).expect("Error: Could not read a line");
-    return line.trim().to_string()
+    return line.trim().to_string();
 }
 
 fn help() {
@@ -15,21 +15,21 @@ fn help() {
     println!("--find         ;opens file location in finder;\n");
 }
 
-fn del() -> bool {
+fn del(f_path: &str) -> bool {
     match fs::remove_file(f_path) {
         Ok(_) => true,
         Err(err) => false
     }
 }
 
-fn find(f_path: &str) -> bool {
-    println!("Opening file...\n")
+fn find() -> bool {
+    println!("Opening file...\n");
     match  Command::new("explorer") // explorer is name of environmental path to file explorer on Windows
         .arg(".") // 1 arg: the current directory | can be changed to intake any directory the user desires
         .spawn() { // spawning the process
             Ok(_) => true,
             Err(_) => {
-                eprintln!("Error launching file explorer")
+                eprintln!("Error launching file explorer");
                 false
             }
         }
