@@ -18,22 +18,27 @@ fn help() {
 fn del(f_path: &str) -> bool {
     match fs::remove_file(f_path) {
         Ok(_) => true,
-        Err(err) => false
+        Err(e) => false
     }
 }
 
-fn find(f_dir: &str) -> bool {
+fn find(mut f_dir: &str) -> bool {
     println!("accessing path...\n");
-    match  Command::new("explorer") // explorer is name of environmental path to file explorer on Windows
-        if f_dir == None {}
+    if f_dir == "" {
+        f_dir = ".";
+    }
+    match Command::new("explorer")
         .arg(f_dir) // 1 arg: the current directory | can be changed to intake any directory the user desires
-        .spawn() { // spawning the process
-            Ok(_) => true,
-            Err(_) => {
-                eprintln!("Error launching given directory");
-                false
-            }
+        .spawn()   // spawning the process
+    {
+        Ok(_) => {
+            true
+        },
+        Err(e) => {
+            eprintln!("Error launching given directory: {}",e);
+            false
         }
+    }
 }
 
 fn main() {
@@ -59,11 +64,14 @@ fn main() {
                     }                   
                 }
                 "find" => {
-                    if find() {
-                        println!("File Explorer successfully launched.");
-                    } else {
-                        eprintln!("Error launching File Explorer.");
+                    if let Some(f_dir) = words.get(1) {
+                        if find(f_dir) {
+                            println!("File Explorer successfully launched.");
+                        } else {
+                            eprintln!("Error launching File Explorer.");
+                        }
                     }
+                    
                     
                 }
                 
