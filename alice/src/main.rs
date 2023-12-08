@@ -15,15 +15,24 @@ fn help() {
     println!("--find         ;opens file location in finder;\n");
 }
 
+<<<<<<< Updated upstream
 fn del(f_path: &str) -> bool {
+=======
+fn del(f_path, &str) -> bool {
+>>>>>>> Stashed changes
     match fs::remove_file(f_path) {
         Ok(_) => true,
         Err(err) => false
     }
 }
 
+<<<<<<< Updated upstream
 fn find() -> bool {
     println!("Opening file...\n");
+=======
+fn find() {
+    println!("Opening file...\n")
+>>>>>>> Stashed changes
     match  Command::new("explorer") // explorer is name of environmental path to file explorer on Windows
         .arg(".") // 1 arg: the current directory | can be changed to intake any directory the user desires
         .spawn() { // spawning the process
