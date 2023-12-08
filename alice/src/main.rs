@@ -1,5 +1,6 @@
 use std::fs;
 use std::io::Write;
+use std::process::Command;
 
 fn prompt(name: &str) -> String {
     let mut line = String::new();
@@ -11,17 +12,27 @@ fn prompt(name: &str) -> String {
 
 fn help() {
     println!("--del          ;deletes file with given path;\n");
-    println!("")
+    println!("--find         ;opens file location in finder;\n");
 }
 
-fn del(f_path: &str) -> bool {
+fn del() -> bool {
     match fs::remove_file(f_path) {
         Ok(_) => true,
-        Err(err) => {
-            eprintln!("error: {}", err);
-            false
-        }
+        Err(err) => false
     }
+}
+
+fn find(f_path: &str) -> bool {
+    println!("Opening file...\n")
+    match  Command::new("explorer") // explorer is name of environmental path to file explorer on Windows
+        .arg(".") // 1 arg: the current directory | can be changed to intake any directory the user desires
+        .spawn() { // spawning the process
+            Ok(_) => true,
+            Err(_) => {
+                eprintln!("Error launching file explorer")
+                false
+            }
+        }
 }
 
 fn main() {
@@ -46,6 +57,15 @@ fn main() {
                         }
                     }                   
                 }
+                "find" => {
+                    if find() {
+                        println!("File Explorer successfully launched.");
+                    } else {
+                        eprintln!("Error launching File Explorer.");
+                    }
+                    
+                }
+                
                 _ => println!("Unknown command: {}\n", command),
             }
         }
