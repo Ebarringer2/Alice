@@ -28,7 +28,7 @@ fn find(mut f_dir: &str) -> bool {
         f_dir = "."; //default arg - the current directory
     }
     match Command::new("explorer")
-        .arg(format!("\"{}\"", f_dir)) 
+        .arg(&f_dir)
         .spawn()   // spawning the process
     {
         Ok(_) => {
@@ -44,6 +44,7 @@ fn find(mut f_dir: &str) -> bool {
 fn main() {
     loop {
         let input = prompt("alice> ");
+        // find User/OneDrive Bellarmine/
         let words: Vec<&str> = input.split_whitespace().collect();
         if let Some(command) = words.get(0) {
             match *command {
@@ -64,25 +65,19 @@ fn main() {
                     }                   
                 }
                 "find" => {
-                    if let Some(extra) = words.get(2) {
-                        println!("incorrect usage: extra word {}", extra)
-                    } else {
-                        if let Some(f_dir) = words.get(1) {
-                            if find(f_dir) {
-                                println!("File Explorer successfully launched.");
-                            } else {
-                                eprintln!("Error launching File Explorer.");
-                            }
+                   if words.len() >= 2{
+                        let fixed_path = words[1..].join(" ");
+                        if find(&fixed_path) {
+                            println!("File explorer succesfully launched\n")
+                        } else {
+                            eprintln!("Error opening file explorer\n")
                         }
-                    }
-                    
-                    
-                    
+                   } else {
+                        println!("Usage: find <directory_path>\n")
+                   }     
                 }
-                
                 _ => println!("Unknown command: {}\n", command),
             }
         }
     }
 }
-
