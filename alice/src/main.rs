@@ -25,10 +25,10 @@ fn del(f_path: &str) -> bool {
 fn find(mut f_dir: &str) -> bool {
     println!("accessing path...\n");
     if f_dir == "" { //if the user doesn't type in anything after calling the function
-        f_dir = ".";
+        f_dir = "."; //default arg - the current directory
     }
     match Command::new("explorer")
-        .arg(f_dir) 
+        .arg(!format("\"{}\""),f_dir) 
         .spawn()   // spawning the process
     {
         Ok(_) => {
