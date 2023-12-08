@@ -1,6 +1,7 @@
 use std::fs;
 use std::io::Write;
 use std::path::Path;
+use sysinfo::{System, SystemExt, ComponentExt};
 mod fetch_hardware;
 use fetch_hardware::fetch_hardware;
 
@@ -87,4 +88,3 @@ fn main() {
         }
     }
 }
-

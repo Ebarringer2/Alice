@@ -7,3 +7,7 @@ edition = "2021"
 
 [dependencies]
 sysinfo = "0.29.11"
+
+[lib]
+name = "fetch_hardware"
+path = "mod.rs"

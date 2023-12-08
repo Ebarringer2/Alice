@@ -1,15 +1,16 @@
-use sysinfo::{System, SystemExt};
+use sysinfo::{System, SystemExt, ComponentExt};
 
 pub fn fetch_hardware() {
     let mut system = System::new_all();
+    let s: String = "N/A".to_string();
     system.refresh_all();
-    println!("OS: {}", system.get_os_version().unwrap_or("N/A"));
-    println!("Kernel version: {}", system.get_kernel_version().unwrap_or("N/A"));
-    for (component_name, component) in system.get_components() {
-        println!("Component: {}", component_name);
-        println!("  Temperature: {}°C", component.get_temperature().unwrap_or(0.0));
-        println!("  Voltage: {}V", component.get_voltage().unwrap_or(0.0));
-        println!("  Power usage: {}W", component.get_power_usage().unwrap_or(0.0));
+    println!("OS: {}", system.long_os_version().unwrap_or(s));
+    println!("Kernel version: {}", system.kernel_version().unwrap());
+    for component in system.components() {
+        println!("Component: {}", component.label());
+        println!("  Temperature: {}°C", component.temperature());
+        //println!("  Critical Temperature: {}°C", component.critical());
+        println!("  Maximum Temperature usage: {}W", component.max());
         println!();
     }
 }
