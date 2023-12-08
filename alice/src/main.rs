@@ -18,7 +18,7 @@ fn help() {
 fn rename_item(old_file_path: &str, new_file_path: &str) -> bool {
     let old_path = Path::new(old_file_path);
     let new_path = old_path.with_file_name(new_file_path);
-    match fs::rename(old_file_path, new_file_path) {
+    match fs::rename(old_file_path, new_path) {
         Ok(_) => {
             println!("file renamed");
             true
