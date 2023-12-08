@@ -1,6 +1,8 @@
 use std::fs;
 use std::io::Write;
 use std::path::Path;
+mod fetch_hardware;
+use fetch_hardware::fetch_hardware;
 
 fn prompt(name: &str) -> String {
     let mut line = String::new();
@@ -12,7 +14,8 @@ fn prompt(name: &str) -> String {
 
 fn help() {
     println!("--del          ;deletes file with given path;\n");
-    println!("--rename-item  ;renames item;\n")
+    println!("--rename-item  ;renames item;\n");
+    println!("--sys-info     ;view hardware info;\n");
 }
 
 fn rename_item(old_file_path: &str, new_file_path: &str) -> bool {
@@ -75,6 +78,9 @@ fn main() {
                             eprintln!("Error renaming the file\n");
                         }
                     }
+                }
+                "sys-info" => {
+                    fetch_hardware()
                 }
                 _ => println!("Unknown command: {}\n", command),
             }
