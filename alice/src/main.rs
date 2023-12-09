@@ -1,4 +1,5 @@
 use std::fs;
+use std::fs::File;
 use std::io::Write;
 use std::process::Command;
 
@@ -13,6 +14,7 @@ fn prompt(name: &str) -> String {
 fn help() {
     println!("--del          ;deletes file with given path;\n");
     println!("--find         ;opens file location in finder;\n");
+    println!("--create       ;creates new file in Desktop;\n")
 }
 
 fn del(f_path: &str) -> bool {
@@ -31,11 +33,19 @@ fn find(mut f_dir: &str) -> bool {
         .arg(&f_dir)
         .spawn()   // spawning the process
     {
-        Ok(_) => {
-            true
-        },
+        Ok(_) => true,
+
         Err(e) => {
-            eprintln!("Error launching given directory: {}",e);
+            false
+        }
+    }
+}
+
+fn create(f_name: &str) -> bool {
+    match File::create(f_name) {
+        Ok(_) => true,
+        
+        Err(e) => {
             false
         }
     }
@@ -51,7 +61,7 @@ fn main() {
                 "help" => help(),
                 "del" => {
                     if let Some(extra) = words.get(2) {
-                        println!("incorrect usage: extra word {}", extra)
+                        eprintln!("incorrect usage: extra word {}", extra)
                     } else {
                         if let Some(file_path) = words.get(1) {
                             if del(file_path) {
@@ -68,13 +78,27 @@ fn main() {
                    if words.len() >= 2{
                         let fixed_path = words[1..].join(" ");
                         if find(&fixed_path) {
-                            println!("File explorer succesfully launched\n")
+                            println!("File explorer succesfully launched\n");
                         } else {
-                            eprintln!("Error opening file explorer\n")
+                            eprintln!("Error opening file explorer\n");
                         }
                    } else {
-                        println!("Usage: find <directory_path>\n")
+                        eprintln!("Usage: find <directory_path>\n");
                    }     
+                }
+
+                "create" => {
+                    if let Some(extra) = words.get(2) {
+                        eprintln!("incorrect usage: extra word {}", extra)
+                    } else {
+                        if let Some(f_name) = words.get(1) {
+                            if create(f_name) {
+                                println!("File successfully created\n");
+                            } else {
+                                eprintln!("Error creating file\n"); 
+                            }
+                        }
+                    }
                 }
                 _ => println!("Unknown command: {}\n", command),
             }
