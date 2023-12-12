@@ -2,8 +2,6 @@ use std::fs;
 use std::io::Write;
 use std::path::Path;
 use sysinfo::{System, SystemExt, ComponentExt};
-mod fetch_hardware;
-use fetch_hardware::fetch_hardware;
 
 fn prompt(name: &str) -> String {
     let mut line = String::new();
@@ -31,6 +29,21 @@ fn rename_item(old_file_path: &str, new_file_path: &str) -> bool {
             eprintln!("error renaming file: {}", e);
             false
         },
+    }
+}
+
+fn fetch_hardware() {
+    let mut system = System::new_all();
+    let s: String = "N/A".to_string();
+    system.refresh_all();
+    println!("OS: {}", system.long_os_version().unwrap_or(s));
+    println!("Kernel version: {}", system.kernel_version().unwrap());
+    for component in system.components() {
+        println!("Component: {}", component.label());
+        println!("  Temperature: {}°C", component.temperature());
+        //println!("  Critical Temperature: {}°C", component.critical());
+        println!("  Maximum Temperature usage: {}W", component.max());
+        println!();
     }
 }
 
@@ -81,7 +94,7 @@ fn main() {
                     }
                 }
                 "sys-info" => {
-                    fetch_hardware()
+                    fetch_hardware();
                 }
                 _ => println!("Unknown command: {}\n", command),
             }

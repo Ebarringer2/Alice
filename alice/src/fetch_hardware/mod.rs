@@ -1,3 +1,4 @@
+/* 
 use sysinfo::{System, SystemExt, ComponentExt};
 
 pub fn fetch_hardware() {
@@ -13,4 +14,4 @@ pub fn fetch_hardware() {
         println!("  Maximum Temperature usage: {}W", component.max());
         println!();
     }
-}
+} */
